@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import getRecentOffers from 'services/offers/getRecent';
 import useSWR from 'swr';
+import { jsonFetcher } from 'utils';
 
 export const getStaticProps = async () => {
   const offers = await getRecentOffers(2);
@@ -12,8 +13,6 @@ export const getStaticProps = async () => {
     }
   };
 };
-
-const jsonFetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Home({ offers }) {
   const { data } = useSWR('/api/offers', jsonFetcher, { initialData: offers });
