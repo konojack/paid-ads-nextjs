@@ -1,18 +1,18 @@
 import BaseLayout from 'components/BaseLayout';
 import Link from 'next/link';
 import Image from 'next/image';
+import getRecentOffers from 'services/offers/getRecent';
 
-export default function Home() {
-  const data = [
-    {
-      id: 1,
-      title: 'Formula 260 SS',
-      category: 'rent',
-      description:
-        'This 260 SS has been meticulously maintained and is in excellent condition! We always keep it in dry storage when not in use. Its very clean, and ready for the summer!'
+export const getStaticProps = async () => {
+  const offers = await getRecentOffers(2);
+  return {
+    props: {
+      offers
     }
-  ];
+  };
+};
 
+export default function Home({ offers }) {
   return (
     <BaseLayout>
       <section className="text-gray-600 body-font">
@@ -30,7 +30,7 @@ export default function Home() {
             </p>
           </div>
           <div className="flex flex-wrap -m-4">
-            {data.map((offer) => (
+            {offers.map((offer) => (
               <div key={offer.id} className="xl:w-1/4 md:w-1/2 p-4 cursor-pointer">
                 <Link href={`/offers/${offer.id}`}>
                   <div className="bg-gray-100 p-6 rounded-lg">
