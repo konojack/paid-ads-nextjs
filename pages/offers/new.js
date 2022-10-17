@@ -1,6 +1,46 @@
 import BaseLayout from 'components/BaseLayout';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 
 export default function OfferNew() {
+  const [formProcessing, setFormProcessing] = useState(false);
+  const router = useRouter();
+  const offerForm = useRef(null);
+
+  const handelSubmit = async (e) => {
+    e.preventDefault();
+    if (formProcessing) return;
+
+    setFormProcessing(true);
+
+    console.log(offerForm.current);
+    const form = new FormData(offerForm.current);
+
+    const payload = {
+      title: form.get('title'),
+      category: form.get('category'),
+      mobile: form.get('mobile'),
+      price: form.get('price'),
+      description: form.get('description'),
+      location: form.get('location')
+    };
+
+    try {
+      await fetch('/api/offers', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      setFormProcessing(false);
+      router.push('/offers/thanks');
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
+
   return (
     <BaseLayout>
       <section className="text-gray-600 body-font relative">
@@ -14,7 +54,7 @@ export default function OfferNew() {
             </p>
           </div>
           <div className="lg:w-1/2 md:w-2/3 mx-auto">
-            <form className="flex flex-wrap -m-2">
+            <form ref={offerForm} className="flex flex-wrap -m-2" onSubmit={handelSubmit}>
               <div className="p-2 w-full">
                 <div className="relative">
                   <label htmlFor="category" className="leading-7 text-sm text-gray-600">
@@ -73,13 +113,13 @@ export default function OfferNew() {
               </div>
               <div className="p-2 w-1/2">
                 <div className="relative">
-                  <label htmlFor="phone" className="leading-7 text-sm text-gray-600">
+                  <label htmlFor="mobile" className="leading-7 text-sm text-gray-600">
                     Mobile phone
                   </label>
                   <input
                     type="text"
-                    id="phone"
-                    name="phone"
+                    id="mobile"
+                    name="mobile"
                     required
                     className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
                   />
@@ -98,8 +138,10 @@ export default function OfferNew() {
                 </div>
               </div>
               <div className="p-2 w-full">
-                <button className="disabled:opacity-50 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-                  Submit offer
+                <button
+                  disabled={formProcessing}
+                  className="disabled:opacity-50 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                  {formProcessing ? 'Please wait...' : 'Submit Offer'}
                 </button>
               </div>
             </form>
