@@ -1,0 +1,13 @@
+POST http://localhost:3000/api/offers
+content-type: application/json
+
+{
+  "title": "Fast Boat",
+  "category": "rent",
+  "mobile": "Fast Boat",
+  "description": "Fast Boat",
+  "location": "Hong Kong",
+  "price": 4300
+}
+
+###

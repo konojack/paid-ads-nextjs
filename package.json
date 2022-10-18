@@ -17,6 +17,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "joi": "^17.6.3",
     "next": "10.0.8",
     "postcss": "^8.2.8",
     "prettier": "^2.2.1",

@@ -9,10 +9,15 @@ export default async (req, res) => {
       break;
     }
     case 'POST': {
-      const payload = req.body;
-      console.log('payload', payload);
-      const offer = await createOffer(payload);
-      res.status(200).json({ status: 'created', offer });
+      try {
+        const payload = req.body;
+        console.log('payload', payload);
+        const offer = await createOffer(payload);
+        res.status(200).json({ status: 'created', offer });
+      } catch (err) {
+        res.status(422).json({ status: 'not_created', err });
+      }
+
       break;
     }
     default:
