@@ -4,13 +4,14 @@ import { useRouter } from 'next/router';
 
 export default function OfferNew() {
   const [formProcessing, setFormProcessing] = useState(false);
+  const [error, setError] = useState();
   const router = useRouter();
   const offerForm = useRef(null);
 
-  const handelSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formProcessing) return;
-
+    setError(null);
     setFormProcessing(true);
 
     console.log(offerForm.current);
@@ -26,7 +27,7 @@ export default function OfferNew() {
     };
 
     try {
-      await fetch('/api/offers', {
+      const response = await fetch('/api/offers', {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: {
@@ -35,9 +36,16 @@ export default function OfferNew() {
       });
 
       setFormProcessing(false);
-      router.push('/offers/thanks');
+      if (response.ok) {
+        router.push('/offers/thanks');
+      } else {
+        const payload = await response.json();
+        setFormProcessing(false);
+        console.log(payload);
+        setError(payload.error?.details[0]?.message);
+      }
     } catch (err) {
-      throw new Error(err);
+      setError(err.message);
     }
   };
 
@@ -54,7 +62,7 @@ export default function OfferNew() {
             </p>
           </div>
           <div className="lg:w-1/2 md:w-2/3 mx-auto">
-            <form ref={offerForm} className="flex flex-wrap -m-2" onSubmit={handelSubmit}>
+            <form ref={offerForm} className="flex flex-wrap -m-2" onSubmit={handleSubmit}>
               <div className="p-2 w-full">
                 <div className="relative">
                   <label htmlFor="category" className="leading-7 text-sm text-gray-600">
@@ -143,6 +151,14 @@ export default function OfferNew() {
                   className="disabled:opacity-50 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
                   {formProcessing ? 'Please wait...' : 'Submit Offer'}
                 </button>
+
+                {error && (
+                  <div className="flex justify-center w-full my-5">
+                    <span className="bg-red-600 w-full rounded text-white">
+                      Offer not added: {error}
+                    </span>
+                  </div>
+                )}
               </div>
             </form>
           </div>
