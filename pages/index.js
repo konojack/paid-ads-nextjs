@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import { jsonFetcher } from 'utils';
 
 export const getStaticProps = async () => {
-  const offers = await getRecentOffers(2);
+  const offers = await getRecentOffers(6);
   return {
     props: {
       offers

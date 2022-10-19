@@ -4,7 +4,7 @@ import createOffer from 'services/offers/create';
 export default async (req, res) => {
   switch (req.method) {
     case 'GET': {
-      const offers = await getRecentOffers(4);
+      const offers = await getRecentOffers(6);
       res.status(200).json(offers);
       break;
     }
