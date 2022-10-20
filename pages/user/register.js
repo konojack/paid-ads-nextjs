@@ -130,7 +130,7 @@ export default function OfferNew() {
                 {error && (
                   <div className="flex justify-center w-full my-5">
                     <span className="bg-red-600 w-full rounded text-white">
-                      Offer not added: {error}
+                      Account not created: {error}
                     </span>
                   </div>
                 )}
