@@ -26,7 +26,12 @@ export default function OfferNew() {
 
       setFormProcessing(false);
       if (response.ok) {
-        router.push('/');
+        if (localStorage.getItem('redirectToAfterLogin')) {
+          router.push(localStorage.getItem('redirectToAfterLogin'));
+          localStorage.removeItem('redirectToAfterLogin');
+        } else {
+          router.push('/');
+        }
       } else {
         setError('Not Authorized. Try Again');
         setFormProcessing(false);

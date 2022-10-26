@@ -1,5 +1,7 @@
 import getRecentOffers from 'services/offers/getRecent';
 import createOffer from 'services/offers/create';
+import { unstable_getServerSession } from 'next-auth/next';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 
 export default async (req, res) => {
   switch (req.method) {
@@ -9,9 +11,14 @@ export default async (req, res) => {
       break;
     }
     case 'POST': {
+      const token = await unstable_getServerSession(req, res, authOptions);
+
       try {
+        if (!token) {
+          res.status(401).json({ status: 'not_logged_in' });
+        }
+
         const payload = req.body;
-        console.log('payload', payload);
         const offer = await createOffer(payload);
         res.status(200).json({ status: 'created', offer });
       } catch (error) {
