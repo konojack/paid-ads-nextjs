@@ -11,7 +11,7 @@ export default function OfferNew() {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (!session && status !== 'authenticated') {
+    if (!session && status == 'unauthenticated') {
       localStorage.setItem('redirectToAfterLogin', router.pathname);
       router.push('/user/signin');
     }

@@ -11,15 +11,16 @@ export default async (req, res) => {
       break;
     }
     case 'POST': {
-      const token = await unstable_getServerSession(req, res, authOptions);
+      const session = await unstable_getServerSession(req, res, authOptions);
 
       try {
-        if (!token) {
+        if (!session) {
           res.status(401).json({ status: 'not_logged_in' });
         }
 
         const payload = req.body;
-        const offer = await createOffer(payload);
+        const userId = session.user.id;
+        const offer = await createOffer(payload, userId);
         res.status(200).json({ status: 'created', offer });
       } catch (error) {
         res.status(422).json({ status: 'not_created', error });
