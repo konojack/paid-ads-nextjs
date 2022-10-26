@@ -25,6 +25,7 @@ const authorize = async (payload) => {
   }
 
   return {
+    id: user.id,
     email: user.fields.email,
     fullName: user.fields.fullName,
     role: user.fields.role
