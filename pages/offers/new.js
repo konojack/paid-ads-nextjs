@@ -23,7 +23,6 @@ export default function OfferNew() {
     setError(null);
     setFormProcessing(true);
 
-    console.log(offerForm.current);
     const form = new FormData(offerForm.current);
 
     const payload = {
@@ -50,7 +49,6 @@ export default function OfferNew() {
       } else {
         const payload = await response.json();
         setFormProcessing(false);
-        console.log(payload);
         setError(payload.error?.details[0]?.message);
       }
     } catch (err) {

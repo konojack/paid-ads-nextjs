@@ -1,6 +1,6 @@
 import BaseLayout from 'components/BaseLayout';
 import { useRouter } from 'next/router';
-import getOffer from 'services/offers/get';
+import { getOfferById } from 'services/offers/get';
 import getRecentOffers from 'services/offers/getRecent';
 
 export const getStaticPaths = async () => {
@@ -17,7 +17,7 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params: { id } }) => {
-  const offer = await getOffer(id);
+  const offer = await getOfferById(id);
 
   return {
     revalidate: 30,
