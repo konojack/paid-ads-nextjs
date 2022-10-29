@@ -7,14 +7,15 @@ import { authOptions } from '../auth/[...nextauth]';
 
 export default async (req, res) => {
   const session = await unstable_getServerSession(req, res, authOptions);
-  const offer = await getOfferById(req.query.id);
+  let offer = await getOfferById(req.query.id);
+
   if (!isOfferAuthorized(offer, session)) {
     res.status(401).json({ status: 'not_authorized' });
   }
   switch (req.method) {
     case 'DELETE': {
       try {
-        const offer = await deleteOffer(offer.airtableId);
+        offer = await deleteOffer(offer.airtableId);
         res.status(200).json({ status: 'offer_deleted', offer });
       } catch (error) {
         res.status(422).json({ status: 'offer_not_deleted', error });
@@ -24,7 +25,7 @@ export default async (req, res) => {
     case 'PUT': {
       try {
         const payload = req.body;
-        const offer = await updateOffer(offer.airtableId, payload);
+        offer = await updateOffer(offer.airtableId, payload);
         res.status(200).json({ status: 'offer_updated', offer });
       } catch (error) {
         res.status(422).json({ status: 'offer_not_updated', error });

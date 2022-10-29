@@ -10,7 +10,7 @@ export const getStaticProps = async () => {
   const offers = await paginateOffers();
   return {
     props: {
-      offset: offers.offset,
+      offset: offers.offset ?? null,
       offers: offers.records.map((offer) => offer.fields)
     }
   };

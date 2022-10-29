@@ -12,10 +12,12 @@ const schema = Joi.object({
 
 const updateOffer = async (offerId, payload) => {
   const validatedOffer = await schema.validateAsync(payload);
-  const offer = await airDB('offers').update({
-    id: offerId,
-    fields: { ...validatedOffer }
-  });
+  const offer = await airDB('offers').update([
+    {
+      id: offerId,
+      fields: { ...validatedOffer }
+    }
+  ]);
 
   return offer;
 };
