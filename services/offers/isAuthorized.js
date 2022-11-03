@@ -6,4 +6,9 @@ const isOfferAuthorized = (offer, session) => {
   return false;
 };
 
-export { isOfferAuthorized };
+const isAdmin = (session) => {
+  if (!session || session.user.role !== 'admin') return false;
+  return true;
+};
+
+export { isOfferAuthorized, isAdmin };
