@@ -31,7 +31,7 @@ export default function airtableIdHome({ offers, offset }) {
   const [currentOffset, setOffset] = useState(offset);
 
   const loadMore = async () => {
-    const response = await jsonFetcher(`/api/offers/paginate?offset=${currentOffset}`);
+    const response = await jsonFetcher(`/api/admin/offers/paginate?offset=${currentOffset}`);
     setOffset(response.offset);
     setCurrentOffers([...currentOffers, ...response.offers]);
   };
@@ -42,6 +42,24 @@ export default function airtableIdHome({ offers, offset }) {
     });
     if (response.ok) {
       const updatedOffers = currentOffers.filter((offer) => offer.id !== id);
+      setCurrentOffers(updatedOffers);
+    }
+  };
+
+  const toggleActive = async (id) => {
+    const response = await fetch(`/api/admin/offers/${id}/toggleActive`, {
+      method: 'PUT'
+    });
+    if (response.ok) {
+      const { offer: updatedOffer } = await response.json();
+      console.log(updatedOffer);
+      const updatedOffers = currentOffers.map((offer) => {
+        if (offer.id == updatedOffer.id) {
+          return updatedOffer;
+        }
+        return offer;
+      });
+      console.log(updatedOffers);
       setCurrentOffers(updatedOffers);
     }
   };
@@ -78,7 +96,7 @@ export default function airtableIdHome({ offers, offset }) {
                       <td className="py-3 px-6 text-center">{offer.category}</td>
                       <td className="py-3 px-6 text-center">
                         <span
-                          // onClick={() => toggleActive(offer.id)}
+                          onClick={() => toggleActive(offer.id)}
                           className={classNames('cursor-pointer py-1 px-3 rounded-full text-xs', {
                             'bg-red-200 text-red-600': offer.status === 'inactive',
                             'bg-green-200 text-green-600': offer.status === 'active'

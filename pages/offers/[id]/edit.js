@@ -58,13 +58,12 @@ export default function OfferEdit({ offer }) {
       if (response.ok) {
         router.push(`/offers/${offer.id}`);
       } else {
-        const payload = await response.json();
+        await response.json();
         setFormProcessing(false);
         // debugger;
         // setError(payload.error?.details[0]?.message);
       }
     } catch (err) {
-      debugger;
       setError(err.message);
     }
   };
