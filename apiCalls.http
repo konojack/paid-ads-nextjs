@@ -13,12 +13,9 @@ content-type: application/json
 
 ### 
 GET http://localhost:3000/api/offers
-content-type: application/json
 
 #####
 GET http://localhost:3000/api/offers/paginate?offset=itrF0B0aGTnOrmWcU/recW1ZHcmVQHCjTLN
-content-type: application/json
-
 
 ############# - /api/users
 POST http://localhost:3000/api/users
@@ -29,3 +26,18 @@ content-type: application/json
   "fullName": "Dawid Kon",
   "password": "sdsdfgg"
 }
+
+
+##### - /api/products
+GET http://localhost:3000/api/products
+
+#### - /api/checkout
+POST http://localhost:3000/api/checkout
+content-type: application/json
+
+{
+  "id": "recKLXEegxy6t9dCt",
+  "offerId": 34,
+  "quantity": 1
+}
+
