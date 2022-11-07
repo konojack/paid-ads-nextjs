@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 export default function OfferNew() {
   const [formProcessing, setFormProcessing] = useState(false);
   const [error, setError] = useState();
+  const [imagePreviewUrl, setImagePreviewUrl] = useState();
   const router = useRouter();
   const offerForm = useRef(null);
   const { data: session, status } = useSession();
@@ -16,6 +17,11 @@ export default function OfferNew() {
       router.push('/user/signin');
     }
   }, [session, status]);
+
+  const handleImagePreview = (e) => {
+    const url = window.URL.createObjectURL(e.target.files[0]);
+    setImagePreviewUrl(url);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +39,11 @@ export default function OfferNew() {
       description: form.get('description'),
       location: form.get('location')
     };
+
+    if (form.get('picture')) {
+      const file = await uploadImage(form.get('picture'));
+      payload.imageUrl = file.secure_url;
+    }
 
     try {
       const response = await fetch('/api/offers', {
@@ -155,6 +166,25 @@ export default function OfferNew() {
                       name="description"
                       required
                       className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                  </div>
+                </div>
+                {imagePreviewUrl && (
+                  <div className="p-2 w-full">
+                    <img src={imagePreviewUrl} alt="" className="rounded m-auto" />
+                  </div>
+                )}
+                <div className="p-2 w-full">
+                  <div className="relative">
+                    <label htmlFor="description" className="leading-7 text-sm text-gray-600">
+                      Picture
+                    </label>
+                    <input
+                      onChange={handleImagePreview}
+                      id="picture"
+                      name="picture"
+                      type="file"
+                      required
+                      className="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></input>
                   </div>
                 </div>
                 <div className="p-2 w-full">

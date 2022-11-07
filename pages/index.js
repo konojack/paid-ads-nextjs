@@ -40,7 +40,7 @@ export default function Home({ offers }) {
                   <div className="bg-gray-100 p-6 rounded-lg">
                     <Image
                       className="h-40 rounded w-full object-cover object-center mb-6"
-                      src="/boat.jpg"
+                      src={offer.imageUrl}
                       width={720}
                       height={400}
                       alt="content"
