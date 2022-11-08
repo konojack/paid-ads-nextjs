@@ -27,6 +27,13 @@ content-type: application/json
   "password": "sdsdfgg"
 }
 
+####
+POST http://localhost:3000/api/users/resetPassword
+content-type: application/json
+
+{
+  "email": "konojack@gmail.com"
+}
 
 ##### - /api/products
 GET http://localhost:3000/api/products
