@@ -26,7 +26,9 @@ export const getStaticProps = async ({ params: { id } }) => {
   return {
     revalidate: 30,
     props: {
-      offer
+      offer,
+      metaTitle: offer.title,
+      metaDescription: offer.description
     }
   };
 };
@@ -49,7 +51,7 @@ export default function OfferPage({ offer }) {
               </h2>
               <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">{offer?.title}</h1>
               <div className="flex mb-4">
-                <p className="flex-grow text-indigo-500 border-b-2 border-indigo-500 py-2 text-lg px-1">
+                <p className="flex-grow text-indigo-900 border-b-2 border-indigo-500 py-2 text-lg px-1">
                   Description
                 </p>
               </div>

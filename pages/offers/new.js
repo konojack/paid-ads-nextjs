@@ -2,6 +2,7 @@ import BaseLayout from 'components/BaseLayout';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { uploadImage } from 'utils';
 
 export default function OfferNew() {
   const [formProcessing, setFormProcessing] = useState(false);

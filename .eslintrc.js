@@ -27,6 +27,9 @@ module.exports = {
     'react/prop-types': 'off',
     'prettier/prettier': ['error', {}, { usePrettierrc: true }], // Use our .prettierrc file as source
     'react/react-in-jsx-scope': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'react/no-unknown-property': 'off',
     'jsx-a11y/anchor-is-valid': [
       'error',
       {
